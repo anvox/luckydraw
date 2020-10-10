@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <base href="../" />
+
+    <title>Landing Page 1 - Ace Admin</title>
+
+    <!-- include common vendor stylesheets & fontawesome -->
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <%= stylesheet_pack_tag 'website', 'data-turbolinks-track': 'reload' %>
+
+    <%= javascript_pack_tag 'website', 'data-turbolinks-track': 'reload' %>
+
+  </head>
+
+  <body>
+    <div class="body-container">
+      <div class="pos-abs" id="scroll-down"></div>
+      <div class="pos-abs" id="scroll-up"></div>
+
+      <nav class="navbar navbar-expand-lg navbar-darkblue" id="navbar-dark">
+        <div class="navbar-inner">
+          <div class="container">
+
+
+
+            <div class="navbar-intro justify-content-xl-between bgc-transparent">
+              <a class="navbar-brand text-white text-180" href="#">
+                <i class="fa fa-leaf text-105 text-green-l5 mr-1"></i>
+                <span>ACE</span>
+                <span class="text-70">Application</span>
+              </a><!-- /.navbar-brand -->
+            </div><!-- /.navbar-intro -->
+
+
+            <div class="navbar-menu collapse navbar-collapse navbar-backdrop " id="navbarMenu1-dark">
+
+              <div class="navbar-nav">
+                <ul class="nav nav-compact-3">
+                </ul><!-- /.navbar-nav menu -->
+              </div><!-- /.navbar-nav -->
+
+            </div><!-- /.navbar-menu.navbar-collapse -->
+
+
+
+            <div class="navbar-menu collapse navbar-collapse navbar-backdrop" id="navbarMenu2-dark">
+              <div class="navbar-nav">
+              </div>
+            </div><!-- .navbar-menu -->
+
+
+
+          </div><!-- /.container -->
+        </div><!-- /.navbar-inner -->
+      </nav>
+
+      <div class="main-container bgc-white">
+
+        <div role="main" class="main-content">
+          <div class="page-content p-0">
+            <!-- the page intro for dark theme -->
+            <div id="page-intro-dark" class="page-intro pos-rel navbar-darkblue py-2 pt-xl-4 py-xl-5 text-white">
+
+              <div id="random-shapes-2"></div><!-- will contain the random circle -->
+              <!-- some random circles -->
+              <%= render_random_circles %>
+
+
+              <div class="row container container-plus mx-auto mt-3 mb-5">
+                <div class="col-12 col-md-7 d-flex flex-column justify-content-center text-center" data-aos="fade-right" data-aos-delay="100">
+                  <h1 class="align-self-center">
+                    <span class="text-110 text-yellow-l3">
+                Our tech
+            </span>
+
+                    <span class="text-90">
+                makes your life easier...
+            </span>
+                  </h1>
+
+                  <h4 class="my-3 text-white text-120">
+                    Start using this amazing app and see instant results!
+                  </h4>
+
+                  <h6 class="my-3 text-105  px-3 radius-3px">
+                    Or put a slideshow here ...
+                  </h6>
+
+
+                  <div class="text-center mt-3">
+                    <!-- sample button with custom background -->
+                    <button type="button" class="btn btn-info brc-white-tp5 py-2 text-110 px-475 mx-15 mb-1 mb-lg-0">
+                      <span class="position-tl w-102 h-102 m-n1px bgc-success-tp4 opacity-5"></span>
+                      <span class="pos-rel">Action 1</span>
+                    </button>
+
+                    <button type="button" class="btn btn-outline-white brc-white-tp3 py-2 text-110 px-475 mx-15">
+                      Action 2
+                    </button>
+                  </div>
+                </div><!-- /.col -->
+              </div><!-- /.row -->
+            </div><!-- /#page-intro-dark -->
+
+
+
+            <div class="bgc-white">
+              <!-- or use a different color -->
+
+              <div class="container container-plus pos-rel mt-n5 text-center py-2">
+
+                <div class="row mt-n4">
+                  <div class="col-12 col-lg-10 col-xl-8 mx-auto">
+                    <div class="row my-4">
+                      <!-- features -->
+                      <div class="col-12 col-md-4 mb-4 mb-md-0" data-aos="fade-up" data-aos-delay="300">
+                        <div class="feature-item radius-2 bgc-white shadow-1 p-4 h-100">
+                          <div class="d-inline-block pos-rel text-center py-2 px-3 text-150">
+                            <!-- the lines beneath icon -->
+                            <div class="rotate-n45 brc-purple-m4 border-t-2 w-75 position-tl mt-35 mr-1"></div>
+                            <div class="rotate-n45 brc-purple-m4 border-t-3 w-90 position-br mr-1 mb-425"></div>
+                            <div class="rotate-n45 brc-purple-m4 border-t-2 w-90 position-bl mb-4 ml-35"></div>
+
+                            <i class="fa fa-rocket fa-2x text-purple-d1 pos-rel"></i>
+                          </div>
+
+                          <h3 class="text-secondary-d3 text-160 my-3">
+                            Speed
+                          </h3>
+
+                          <p class="text-dark-m3">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit...
+                          </p>
+                        </div>
+                      </div>
+
+
+                      <div class="col-12 col-md-4 mb-4  mb-md-0" data-aos="fade-up" data-aos-delay="450">
+                        <div class="feature-item radius-2 bgc-white shadow-1 p-4 h-100">
+                          <div class="d-inline-block pos-rel text-center p-2 text-150">
+                            <!-- the lines beneath icon -->
+                            <div class="brc-blue-m4 border-t-2 w-75 position-tl mt-3 ml-n2"></div>
+                            <div class="brc-blue-m4 border-t-3 w-90 position-lc ml-n1 mt-n2"></div>
+                            <div class="brc-blue-m4 border-t-2 w-90 position-bl mb-4 ml-n3"></div>
+
+                            <i class="fa fa-running fa-2x text-blue-d1 pos-rel"></i>
+                          </div>
+
+                          <h3 class="text-secondary-d3 text-160 my-3">
+                            Flexibility
+                          </h3>
+
+                          <p class="text-dark-m3">
+                            Praesent commodo cursus magna, vel scelerisque nisl consectetur...
+                          </p>
+                        </div>
+                      </div>
+
+
+                      <div class="col-12 col-md-4 mb-4 mb-md-0" data-aos="fade-up" data-aos-delay="600">
+                        <div class="feature-item radius-2 bgc-white shadow-1 p-4 h-100">
+                          <div class="d-inline-block text-center p-2 text-150 pos-rel">
+                            <!-- the circles beneath icon -->
+                            <div class="brc-orange-m4 border-2 w-3 h-3 radius-round position-tl mt-2 ml-n1"></div>
+                            <div class="brc-orange-m4 border-2 w-2 h-2 radius-round position-tr mt-n1 ml-n1"></div>
+                            <div class="brc-orange-m4 border-2 w-4 h-4 radius-round position-br mb-2"></div>
+
+                            <i class="fa fa-key fa-2x text-orange pos-rel"></i>
+                          </div>
+
+                          <h3 class="text-secondary-d3 text-160 my-3">
+                            Security
+                          </h3>
+
+                          <p class="text-dark-m3">
+                            Nulla vitae elit libero, a pharetra augue mollis interdum...
+                          </p>
+                        </div>
+                      </div>
+
+                    </div><!-- /.row -->
+                  </div><!-- /.col -->
+                </div><!-- /.row -->
+
+              </div><!-- /.container -->
+            </div>
+
+            <div class="footer h-auto">
+              <div class="footer-inner py-45">
+                <div class="container container-plus" data-aos="fade">
+                  <div class="row">
+                    <div class="col-12 col-lg-5">
+                      <h2 class="text-dark-m3">
+                        <i class="fa fa-leaf text-85 mr-1 text-success-m1"></i>
+                        ACE
+                        <span class="text-75 text-dark-l2">Application</span>
+                      </h2>
+
+                      <p class="text-90">
+                        Praesent commodo cursus magna!
+                      </p>
+
+                      <div class="text-150 mt-2">
+                        <i class="bgc-blue-m1 p-25 w-6 radius-round fab fa-twitter text-white mx-1"></i>
+                        <i class="bgc-primary-d2 p-25 w-6 radius-round fab fa-facebook-square text-white mx-1"></i>
+                        <i class="bgc-purple p-25 w-6 radius-round fab fa-instagram text-white mx-1"></i>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-lg-7 mt-5 mt-lg-0">
+                      <div class="row text-center text-lg-left">
+                        <div class="col-4 ">
+                          <h6 class="text-dark-tp3 text-95 text-600 mb-3">ABOUT</h6>
+                          <div>
+                            <a href="#" class="text-dark-tp4">Link 1</a>
+                            <br />
+                            <a href="#" class="text-dark-tp4">Link 2</a>
+                          </div>
+                        </div>
+
+                        <div class="col-4">
+                          <h6 class="text-dark-tp3 text-95 text-600 mb-3">PRODUCTS</h6>
+                          <div>
+                            <a href="#" class="text-dark-tp4">Product 1</a>
+                            <br />
+                            <a href="#" class="text-dark-tp4">Product 2</a>
+                            <br />
+                            <a href="#" class="text-dark-tp4">Product 3</a>
+                          </div>
+                        </div>
+
+                        <div class="col-4">
+                          <h6 class="text-dark-tp3 text-95 text-600 mb-3">CONTACT</h6>
+                          <div>
+                            <a href="#" class="text-dark-tp4">Email</a>
+                            <br />
+                            <a href="#" class="text-dark-tp4">Phone</a>
+                            <br />
+                            <a href="#" class="text-dark-tp4">Address</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div><!-- /.row -->
+
+                </div><!-- /.container -->
+              </div><!-- /.footer-inner -->
+            </div><!-- /.footer -->
+
+
+
+            <div class="text-center py-4 bgc-primary-l4 border-t-1 brc-primary-l3">
+              <span class="text-dark-m3 text-105">
+        Copyright &copy; 2020 Ace Company
+    </span>
+            </div>
+
+
+            <div class="footer-tools">
+              <a id="btn-scroll-up" href="#" class="btn-scroll-up btn btn-dark px-25 py-2 text-95 border-2 radius-round mb-2 mr-2">
+                <i class="fa fa-arrow-up w-2 h-2"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </body>
+
+</html>
