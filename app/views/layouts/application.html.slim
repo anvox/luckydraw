@@ -1,0 +1,39 @@
+doctype html
+html lang="en"
+  head
+    meta charset="utf-8"
+    meta name="viewport" content="width=device-width, height=device-height, initial-scale=1"
+
+    title Lucky Draw
+
+    = csrf_meta_tags
+    = csp_meta_tag
+
+    link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet"
+
+    = stylesheet_pack_tag 'application', 'data-turbolinks-track': 'reload'
+    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+
+  body
+    .body-container
+      nav#navbar-dark.navbar.navbar-expand-lg.navbar-darkblue
+        .navbar-inner
+          .container
+
+            .navbar-intro.justify-content-xl-between.bgc-transparent
+              a.navbar-brand.text-white.text-180 href="#"
+                i.fa.fa-dice.text-105.text-green-l5.mr-1
+                |&nbsp;
+                span Lucky Draw
+
+            #navbarMenu1-dark.navbar-menu.collapse.navbar-collapse.navbar-backdrop
+              .navbar-nav
+
+            #navbarMenu2-dark.navbar-menu.collapse.navbar-collapse.navbar-backdrop
+              .navbar-nav
+
+      .main-container.bgc-white
+        .main-content role="main"
+          .page-content.p-0
+            = yield
+            = render partial: 'layouts/credit'

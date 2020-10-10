@@ -4,24 +4,25 @@
 
   .row.container.container-plus.mx-auto.mt-3.mb-5
     .col-12.col-md-12.d-flex.flex-column.justify-content-center.text-center
-      h1.align-self-center
-        span.text-90 Create your own
-        |&nbsp;
-        span.text-110.text-yellow-l3 lucky draw
-        |&nbsp;
-        span.text-90 instantly!
+      = form_tag(lucky_draws_path, method: :post) do
+        h1.align-self-center
+          span.text-90 Create your own
+          |&nbsp;
+          span.text-110.text-yellow-l3 lucky draw
+          |&nbsp;
+          span.text-90 instantly!
 
-      h4.my-3.text-white.text-120 Just enter the title to start:
+        h4.my-3.text-white.text-120 Just enter the title to start:
 
-      .text-center.mt-3
-        .col-md-12
-          .col-md-8.d-inline-flex.align-items-center.mb-1
-            i.fa.fa-dice.text-blue.text-125.ml-25.pos-abs
-            input.form-control.form-control-lg.px-475 type="text" placeholder="Title"
+        .text-center.mt-3
+          .col-md-12
+            .col-md-8.d-inline-flex.align-items-center.mb-1
+              i.fa.fa-dice.text-blue.text-125.ml-25.pos-abs
+              input.form-control.form-control-lg.px-475 type="text" placeholder="Title" name="title"
 
-      .text-center.mt-3
-        button.btn.btn-info.brc-white-tp5.py-2.text-110.px-475.mx-15.mb-1.mb-lg-0 type="button"
-          span.position-tl.w-102.h-102.m-n1px.bgc-success-tp4.opacity-5
-          span.pos-rel Create
+        .text-center.mt-3
+          button.btn.btn-info.brc-white-tp5.py-2.text-110.px-475.mx-15.mb-1.mb-lg-0 type="submit"
+            span.position-tl.w-102.h-102.m-n1px.bgc-success-tp4.opacity-5
+            span.pos-rel Create
 
-        /button.btn.btn-outline-white.brc-white-tp3.py-2.text-110.px-475.mx-15 type="button" Action 2
+          /button.btn.btn-outline-white.brc-white-tp3.py-2.text-110.px-475.mx-15 type="button" Action 2
