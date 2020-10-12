@@ -1,19 +1,21 @@
 <template lang="pug">
+#random-shapes-2
+random-circles(:circles=40)
 .nested
   |Counter: {{ counter }}
 </template>
 
 <script>
-export default {
+  import RandomCircles from "./random_circles.vue"
+
+  export default {
+    components: {
+      'random-circles': RandomCircles
+    },
     data() {
       return {
         counter: 0
       }
-    },
-    mounted() {
-      setInterval(() => {
-        this.counter++
-      }, 1000)
     }
   }
 </script>
