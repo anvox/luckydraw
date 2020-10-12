@@ -34,7 +34,10 @@ html lang="en"
               .navbar-nav
 
       .main-container.bgc-white
+        .sidebar.hideable.collapsed
         .main-content role="main"
           .page-content.p-0
             = yield
-            = render partial: 'layouts/credit'
+            .footer-fixed
+              .footer-inner
+                = render partial: 'layouts/credit'
