@@ -1,5 +1,6 @@
-<template>
-  Counter: {{ counter }}
+<template lang="pug">
+.nested
+  |Counter: {{ counter }}
 </template>
 
 <script>

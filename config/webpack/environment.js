@@ -8,8 +8,8 @@ environment.plugins.prepend('VueLoaderPlugin', new VueLoaderPlugin())
 environment.loaders.prepend('vue', vue)
 
 // Load pug
-// const pugConfig = require('./loaders/pug')
-// environment.loaders.prepend('pug', pugConfig)
+const pugConfig = require('./loaders/pug')
+environment.loaders.append("pug", pugConfig);
 
 // ----------------------------
 module.exports = environment
