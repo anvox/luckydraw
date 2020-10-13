@@ -12,6 +12,7 @@
           div
             .d-none.bgc-secondary-l1.radius-1.px-1.mb-3.mt-1.text-center
               .btn-group.btn-group-toggle.align-self-end.flex-wrap.justify-content-center.w-75.mx-auto.align-items-center.my-2.flex-equal-sm(data-toggle="buttons")
+            textarea(style="width: 100%;", v-model="candidateText")
     .aside-header.align-self-start.mt-1.mt-lg-5.text-right.d-style
       button.btn.btn-orange.btn-lg.shadow-sm.pl-2.radius-l-2.f-n-hover.py-1.py-md-2(type="button", data-toggle="modal", data-target="#id-ace-settings-modal")
         i.fa.fa-cog.text-110.ml-1
@@ -19,6 +20,7 @@
 
 <script type="text/javascript">
 import Aside from '../ace/js/src/aside'
+import * as CSV from 'csv-string';
 
 export default {
   data() {
@@ -26,9 +28,9 @@ export default {
       candidateText: ""
     }
   },
-  props: {
-    candidates: {
-      default: []
+  watch: {
+    candidateText(currentText, _) {
+      this.$emit('update:modelValue', CSV.parse(currentText))
     }
   }
 }

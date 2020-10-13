@@ -1,8 +1,9 @@
 <template lang="pug">
 random-circles(:circles=40)
-.nested
-  |Counter: {{ counter }}
-draw-settings
+.list(v-if="candidates.length > 0")
+  .item(v-for="candidate in candidates")
+    |item {{candidate}}
+draw-settings(v-model="candidates")
 </template>
 
 <script>
@@ -18,7 +19,7 @@ draw-settings
     },
     data() {
       return {
-        counter: 0
+        candidates: []
       }
     },
     mounted() {
