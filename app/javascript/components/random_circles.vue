@@ -12,7 +12,7 @@
     },
     methods: {
       random_size() {
-        return Math.floor(Math.random() * 16) + 4;
+        return Math.floor(Math.random() * 28) + 4;
       },
       random_opacity() {
         return Math.floor(Math.random() * 31) + 10;

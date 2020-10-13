@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
-import Counter from "../components/counter.vue"
+import LuckyDraw from "../components/lucky_draw.vue"
 
 document.addEventListener('DOMContentLoaded', () => {
-  const app = createApp(Counter)
+  const app = createApp(LuckyDraw)
   app.mount('#page-intro-dark')
 })
