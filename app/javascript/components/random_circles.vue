@@ -29,6 +29,7 @@
           opacity: `0.${this.random_opacity()}`,
           left: `${this.random_position()}%`,
           top: `${this.random_position()}%`,
+          zIndex: 1,
         }
       },
     }
