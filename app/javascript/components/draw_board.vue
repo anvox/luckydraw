@@ -1,6 +1,6 @@
 <style scoped>
 #draw-board {
-  width: 800px;
+  width: 900px;
   height: 600px;
   margin: auto;
   z-index: 100;
@@ -13,44 +13,130 @@
 
 <script type="text/javascript">
   import * as PIXI from "pixi.js"
-  import BunnyImage from "./assets/bunny.png"
+  import gsap from 'gsap'
+  import PixiPlugin from 'gsap/PixiPlugin'
+  import MotionPathPlugin from 'gsap/MotionPathPlugin'
 
   export default {
     data() {
       return {
-        app: null
+        app: null,
+        width: 900,
+        height: 200,
+        containers: [],
+        grandContainer: null,
+        position: {
+          x: 0
+        },
+        avatarWidth: 90
       }
     },
+    props: ["candidates"],
     mounted() {
+      PixiPlugin.registerPIXI(PIXI)
+      gsap.registerPlugin(PixiPlugin, MotionPathPlugin)
+
       this.app = new PIXI.Application({
-        width: 400,
-        height: 300,
-        backgroundColor: 0x1099bb,
-        resolution: window.devicePixelRatio || 1,
+        width: this.width,
+        height: this.height,
+        transparent: true,
+        antialias: true,
+        resolution: 1,
       })
       this.$refs.board.appendChild(this.app.view)
-      const container = new PIXI.Container()
-      this.app.stage.addChild(container)
-      const texture = PIXI.Texture.from(BunnyImage)
-      for (let i = 0; i < 25; i++) {
+
+      this.grandContainer = new PIXI.Container({sortableChildren: true})
+      this.app.stage.addChild(this.grandContainer)
+    },
+    methods: {
+      createAvatar(url) {
+        const container = new PIXI.Container()
+        const texture = PIXI.Texture.from(url)
+
         const bunny = new PIXI.Sprite(texture)
-        bunny.anchor.set(0.5)
-        bunny.x = (i % 5) * 20
-        bunny.y = Math.floor(i / 5) * 20
+        bunny.anchor.set(0)
+        bunny.x = -40
+        bunny.y = -40
+
+        const graphics = new PIXI.Graphics();
+        graphics.beginFill(0xFFFFFF);
+        graphics.drawCircle(40 , 40 , 40);
+        graphics.endFill();
+
+        bunny.mask = graphics;
+        bunny.addChild(graphics)
+
         container.addChild(bunny)
+
+        const border = new PIXI.Graphics();
+        border.beginFill(0xFFFFFF, 0);
+        border.lineStyle(4, 0xFFFFFF);
+        border.drawCircle(0, 0, 40);
+        border.endFill();
+        container.addChild(border)
+
+        // Move container to the center
+        container.x = 40
+        container.y = 100
+
+        container.scale.x = 1
+        container.scale.y = 1
+
+        return container
+      },
+      clearStage() {
+        this.grandContainer.removeChildren()
+      },
+      roll() {
+        this.app.ticker.add((delta) => {
+          const screenWidth = this.width + (this.avatarWidth / 2)
+          const frameWidth = this.avatarWidth * this.grandContainer.children.length
+
+          for (var i = 0; i < this.grandContainer.children.length; i++) {
+            const newX = this.avatarWidth * i + this.position.x
+            if (newX > screenWidth) {
+              this.grandContainer.children[i].x = newX % frameWidth - (this.avatarWidth / 2)
+            } else {
+              this.grandContainer.children[i].x = newX - (this.avatarWidth / 2)
+            }
+          }
+        })
+      },
+      tween(target) {
+        const targetX = target * this.avatarWidth
+        gsap.to(this.position, {x: targetX, duration: 4, ease: "back.out(2)"})
+      },
+      loadContainer() {
+        var containers = []
+        for (var i = 0; i < this.candidates.length; i++) {
+          var container = this.createAvatar(`candidate-${i}`)
+          container.x += i * this.avatarWidth
+          containers.push(container)
+        }
+        this.grandContainer.addChild(...containers)
+        this.grandContainer.sortChildren()
+
+        this.tween(0)
+        this.roll()
+      },
+      startPlay() {
+        const target = (this.position.x / this.avatarWidth) + Math.floor(Math.random() * this.candidates.length * 1.3) + this.candidates.length
+        this.tween(target)
       }
-      // Move container to the center
-      container.x = this.app.screen.width / 2
-      container.y = this.app.screen.height / 2
-      // Center bunny sprite in local container coordinates
-      container.pivot.x = container.width / 2
-      container.pivot.y = container.height / 2
-      // Listen for animate update
-      this.app.ticker.add((delta) => {
-          // rotate the container!
-          // use delta to create frame-independent transform
-          container.rotation -= 0.01 * delta;
-      })
+    },
+    watch: {
+      candidates(newCandidates, _) {
+        this.clearStage()
+        if (newCandidates.length <= 0) {
+          return
+        }
+
+        for (var i = 0; i < newCandidates.length; i++) {
+          this.app.loader.add(`candidate-${i}`, this.candidates[i][1])
+        }
+
+        this.app.loader.load(this.loadContainer)
+      }
     }
   }
 </script>

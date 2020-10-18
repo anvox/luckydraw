@@ -1,10 +1,7 @@
 <template lang="pug">
 random-circles(:circles=40)
 .row.container.container-plus.mx-auto.mt-3.mb-5
-  .list(v-if="candidates.length > 0")
-    .item(v-for="candidate in candidates")
-      |item {{candidate}}
-  draw-board
+  draw-board(:candidates="candidates")
 draw-settings(v-model="candidates")
 </template>
 
