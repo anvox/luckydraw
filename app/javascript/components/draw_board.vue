@@ -1,14 +1,21 @@
 <style scoped>
+.animate {
+  width: 100%;
+}
 #draw-board {
   width: 900px;
-  height: 600px;
+  height: 200px;
   margin: auto;
   z-index: 100;
 }
 </style>
 
 <template lang="pug">
-#draw-board(ref="board")
+.animate
+  #draw-board(ref="board")
+.col-12.col-md-12.d-flex.flex-column.justify-content-center.text-center
+  .col
+    button.col-6.btn.btn-outline-white.brc-white-tp3(type="button", @click="startPlay") Draw
 </template>
 
 <script type="text/javascript">
