@@ -33,8 +33,10 @@
         containers: [],
         grandContainer: null,
         position: {
-          x: 0
+          x: 0,
+          prev: 0,
         },
+        blur: null,
         avatarWidth: 90
       }
     },
@@ -53,6 +55,11 @@
       this.$refs.board.appendChild(this.app.view)
 
       this.grandContainer = new PIXI.Container({sortableChildren: true})
+      this.blur = new PIXI.filters.BlurFilter()
+      this.blur.blurX = 0
+      this.blur.blurY = 0
+      this.grandContainer.filters = [this.blur]
+
       this.app.stage.addChild(this.grandContainer)
     },
     methods: {
@@ -98,6 +105,9 @@
         this.app.ticker.add((delta) => {
           const screenWidth = this.width + (this.avatarWidth / 2)
           const frameWidth = this.avatarWidth * this.grandContainer.children.length
+
+          this.blur.blurY = (this.position.x - this.position.prev) * 0.1
+          this.position.prev = this.position.x
 
           for (var i = 0; i < this.grandContainer.children.length; i++) {
             const newX = this.avatarWidth * i + this.position.x
