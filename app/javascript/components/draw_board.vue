@@ -46,7 +46,8 @@
         },
         blur: null,
         avatarWidth: 90,
-        targetName: ""
+        currentTarget: 0,
+        greyscales: []
       }
     },
     props: {
@@ -112,6 +113,13 @@
         border.endFill();
         container.addChild(border)
 
+        // Greyout when showing result
+        const greyscale = new PIXI.filters.ColorMatrixFilter()
+        greyscale.greyscale(0.2, true)
+        greyscale.enabled = false;
+        this.greyscales[index] = greyscale
+        container.filters = [greyscale]
+
         // Shape whole avatar container
         container.x = 40
         container.y = 100
@@ -147,25 +155,34 @@
       tween(target) {
         const targetX = target * this.avatarWidth
         const backout = 0.5 + Math.random() * 1.6
-        gsap.to(this.position, {x: targetX, duration: 4, ease: `back.out(${backout})`})
+        gsap.to(this.position,
+          {
+            x: targetX,
+            duration: 4,
+            ease: `back.out(${backout})`,
+            onComplete: this.showWinner
+          })
       },
       loadContainer() {
         var containers = []
         for (var i = 0; i < this.candidates.length; i++) {
-          var container = this.createAvatar(`candidate-${i}`)
+          var container = this.createAvatar(`candidate-${i}`, i)
           container.x += i * this.avatarWidth
           containers.push(container)
         }
         this.grandContainer.addChild(...containers)
         this.grandContainer.sortChildren()
 
-        this.tween(0)
         this.roll()
       },
       startPlay() {
-        const target = (this.position.x / this.avatarWidth) + Math.floor(Math.random() * this.candidates.length * 1.3) + this.candidates.length
+        for (var i = this.greyscales.length - 1; i >= 0; i--) {
+          this.greyscales[i].enabled = false
+        }
 
-        this.tween(target)
+        this.currentTarget = (this.position.x / this.avatarWidth) + Math.floor(Math.random() * this.candidates.length * 1.3) + this.candidates.length
+
+        this.tween(this.currentTarget)
       },
       drawFrame() {
         const container = new PIXI.Container()
@@ -182,6 +199,18 @@
         container.addChild(frame)
 
         return container
+      },
+      showWinner() {
+        var target = 5 - (this.currentTarget % this.candidates.length)
+        if (target < 0) {
+          target += this.candidates.length
+        }
+
+        for (var i = this.greyscales.length - 1; i >= 0; i--) {
+          if (target != i) {
+            this.greyscales[i].enabled = true
+          }
+        }
       }
     },
     watch: {
@@ -210,7 +239,6 @@
         if (target < 0) {
           target += this.candidates.length
         }
-
         return this.candidates[target][0]
       }
     }
