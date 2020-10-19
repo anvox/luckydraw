@@ -106,7 +106,7 @@
           const screenWidth = this.width + (this.avatarWidth / 2)
           const frameWidth = this.avatarWidth * this.grandContainer.children.length
 
-          this.blur.blurY = (this.position.x - this.position.prev) * 0.1
+          this.blur.blurX = (this.position.x - this.position.prev) * 0.1
           this.position.prev = this.position.x
 
           for (var i = 0; i < this.grandContainer.children.length; i++) {
@@ -121,7 +121,7 @@
       },
       tween(target) {
         const targetX = target * this.avatarWidth
-        gsap.to(this.position, {x: targetX, duration: 4, ease: "back.out(2)"})
+        gsap.to(this.position, {x: targetX, duration: 4, ease: `back.out(${1.1 + Math.random()})`})
       },
       loadContainer() {
         var containers = []
