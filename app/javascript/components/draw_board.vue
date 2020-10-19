@@ -23,12 +23,13 @@
   import gsap from 'gsap'
   import PixiPlugin from 'gsap/PixiPlugin'
   import MotionPathPlugin from 'gsap/MotionPathPlugin'
+  import FrameImage from "./assets/frame.png"
 
   export default {
     data() {
       return {
         app: null,
-        width: 900,
+        width: 810,
         height: 200,
         containers: [],
         grandContainer: null,
@@ -61,6 +62,20 @@
       this.grandContainer.filters = [this.blur]
 
       this.app.stage.addChild(this.grandContainer)
+
+      const container = new PIXI.Container()
+      const texture = PIXI.Texture.from(FrameImage)
+      const frame = new PIXI.Sprite(texture)
+
+      container.x = 347
+      container.y = 43
+
+      frame.width = 115
+      frame.height = 115
+
+      container.addChild(frame)
+
+      this.app.stage.addChild(container)
     },
     methods: {
       createAvatar(url) {
