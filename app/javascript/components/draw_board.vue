@@ -8,14 +8,18 @@
   margin: auto;
   z-index: 100;
 }
+.winner {
+  padding-bottom: 40px;
+}
 </style>
 
 <template lang="pug">
 .animate
   #draw-board(ref="board")
-.col-12.col-md-12.d-flex.flex-column.justify-content-center.text-center
-  .col
-    |{{currentAvatar}}
+.winner.col-12.col-md-12.d-flex.flex-column.justify-content-center.text-center
+  h1.align-self-center
+    span.text-110.text-yellow-l3
+      |{{currentAvatar}}
 .col-12.col-md-12.d-flex.flex-column.justify-content-center.text-center
   .col
     button.col-6.btn.btn-outline-white.brc-white-tp3(type="button", @click="startPlay") Draw
