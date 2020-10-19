@@ -81,7 +81,7 @@
       this.app.stage.addChild(frameContainer)
     },
     methods: {
-      createAvatar(url) {
+      createAvatar(url, index) {
         const container = new PIXI.Container()
 
         // Avatar
@@ -111,13 +111,6 @@
         border.drawCircle(0, 0, 40);
         border.endFill();
         container.addChild(border)
-
-        // Grey filter after tween
-        const greyscale = new PIXI.filters.ColorMatrixFilter();
-        greyscale.greyscale(0.2, true);
-        greyscale.enabled = false;
-        container.filters = [greyscale];
-
 
         // Shape whole avatar container
         container.x = 40
@@ -171,7 +164,7 @@
       },
       startPlay() {
         const target = (this.position.x / this.avatarWidth) + Math.floor(Math.random() * this.candidates.length * 1.3) + this.candidates.length
-        console.log(`tween to ${target}`)
+
         this.tween(target)
       },
       drawFrame() {
