@@ -3,7 +3,7 @@
   width: 100%;
 }
 #draw-board {
-  width: 900px;
+  width: 810px;
   height: 200px;
   margin: auto;
   z-index: 100;
@@ -41,7 +41,12 @@
         avatarWidth: 90
       }
     },
-    props: ["candidates"],
+    props: {
+      candidates: {},
+      blurEffect: {
+        default: false
+      }
+    },
     mounted() {
       PixiPlugin.registerPIXI(PIXI)
       gsap.registerPlugin(PixiPlugin, MotionPathPlugin)
@@ -56,37 +61,31 @@
       this.$refs.board.appendChild(this.app.view)
 
       this.grandContainer = new PIXI.Container({sortableChildren: true})
-      this.blur = new PIXI.filters.BlurFilter()
-      this.blur.blurX = 0
-      this.blur.blurY = 0
-      this.grandContainer.filters = [this.blur]
-
+      if (this.blurEffect) {
+        this.blur = new PIXI.filters.BlurFilter()
+        this.blur.blurX = 0
+        this.blur.blurY = 0
+        this.grandContainer.filters = [this.blur]
+      }
       this.app.stage.addChild(this.grandContainer)
 
-      const container = new PIXI.Container()
-      const texture = PIXI.Texture.from(FrameImage)
-      const frame = new PIXI.Sprite(texture)
-
-      container.x = 347
-      container.y = 43
-
-      frame.width = 115
-      frame.height = 115
-
-      container.addChild(frame)
-
-      this.app.stage.addChild(container)
+      const frameContainer = this.drawFrame()
+      this.app.stage.addChild(frameContainer)
     },
     methods: {
       createAvatar(url) {
         const container = new PIXI.Container()
-        const texture = PIXI.Texture.from(url)
 
+        // Avatar
+        const texture = PIXI.Texture.from(url)
         const bunny = new PIXI.Sprite(texture)
         bunny.anchor.set(0)
         bunny.x = -40
         bunny.y = -40
+        bunny.width = this.avatarWidth - 10
+        bunny.height = this.avatarWidth - 10
 
+        // Crop to circle
         const graphics = new PIXI.Graphics();
         graphics.beginFill(0xFFFFFF);
         graphics.drawCircle(40 , 40 , 40);
@@ -97,6 +96,7 @@
 
         container.addChild(bunny)
 
+        // Draw the white border
         const border = new PIXI.Graphics();
         border.beginFill(0xFFFFFF, 0);
         border.lineStyle(4, 0xFFFFFF);
@@ -104,7 +104,14 @@
         border.endFill();
         container.addChild(border)
 
-        // Move container to the center
+        // Grey filter after tween
+        const greyscale = new PIXI.filters.ColorMatrixFilter();
+        greyscale.greyscale(0.2, true);
+        greyscale.enabled = true;
+        container.filters = [greyscale];
+
+
+        // Shape whole avatar container
         container.x = 40
         container.y = 100
 
@@ -121,8 +128,10 @@
           const screenWidth = this.width + (this.avatarWidth / 2)
           const frameWidth = this.avatarWidth * this.grandContainer.children.length
 
-          this.blur.blurX = (this.position.x - this.position.prev) * 0.1
-          this.position.prev = this.position.x
+          if (this.blurEffect) {
+            this.blur.blurX = (this.position.x - this.position.prev) * 0.1
+            this.position.prev = this.position.x
+          }
 
           for (var i = 0; i < this.grandContainer.children.length; i++) {
             const newX = this.avatarWidth * i + this.position.x
@@ -136,7 +145,8 @@
       },
       tween(target) {
         const targetX = target * this.avatarWidth
-        gsap.to(this.position, {x: targetX, duration: 4, ease: `back.out(${1.1 + Math.random()})`})
+        const backout = 0.5 + Math.random() * 1.6
+        gsap.to(this.position, {x: targetX, duration: 4, ease: `back.out(${backout})`})
       },
       loadContainer() {
         var containers = []
@@ -154,6 +164,22 @@
       startPlay() {
         const target = (this.position.x / this.avatarWidth) + Math.floor(Math.random() * this.candidates.length * 1.3) + this.candidates.length
         this.tween(target)
+      },
+      drawFrame() {
+        const container = new PIXI.Container()
+        const texture = PIXI.Texture.from(FrameImage)
+        const frame = new PIXI.Sprite(texture)
+
+        // TODO: Remove hardcode
+        container.x = 347
+        container.y = 43
+
+        frame.width = 115
+        frame.height = 115
+
+        container.addChild(frame)
+
+        return container
       }
     },
     watch: {
