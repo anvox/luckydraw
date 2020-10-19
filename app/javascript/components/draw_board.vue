@@ -15,6 +15,9 @@
   #draw-board(ref="board")
 .col-12.col-md-12.d-flex.flex-column.justify-content-center.text-center
   .col
+    |{{currentAvatar}}
+.col-12.col-md-12.d-flex.flex-column.justify-content-center.text-center
+  .col
     button.col-6.btn.btn-outline-white.brc-white-tp3(type="button", @click="startPlay") Draw
 </template>
 
@@ -38,7 +41,8 @@
           prev: 0,
         },
         blur: null,
-        avatarWidth: 90
+        avatarWidth: 90,
+        targetName: ""
       }
     },
     props: {
@@ -107,7 +111,7 @@
         // Grey filter after tween
         const greyscale = new PIXI.filters.ColorMatrixFilter();
         greyscale.greyscale(0.2, true);
-        greyscale.enabled = true;
+        greyscale.enabled = false;
         container.filters = [greyscale];
 
 
@@ -163,6 +167,7 @@
       },
       startPlay() {
         const target = (this.position.x / this.avatarWidth) + Math.floor(Math.random() * this.candidates.length * 1.3) + this.candidates.length
+        console.log(`tween to ${target}`)
         this.tween(target)
       },
       drawFrame() {
@@ -194,6 +199,22 @@
         }
 
         this.app.loader.load(this.loadContainer)
+      }
+    },
+    computed: {
+      currentAvatar() {
+        if (this.candidates.length <= 0) {
+          return ""
+        }
+
+        var target = Math.ceil(this.position.x / this.avatarWidth)
+        target = target % this.candidates.length
+        target = 5 - target
+        if (target < 0) {
+          target += this.candidates.length
+        }
+
+        return this.candidates[target][0]
       }
     }
   }
