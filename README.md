@@ -1,24 +1,7 @@
-# README
+# Lucky draw
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A small app receive candidate list from many source to build a fancy lucky draw board.
 
-Things you may want to cover:
+## Disclaim
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+This is a just-for-fun pet project to try some new tech like rails 6, vue.js, javascript graphic. Not for using internal nor external.
