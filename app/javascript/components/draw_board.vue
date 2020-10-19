@@ -177,6 +177,10 @@
         this.roll()
       },
       startPlay() {
+        if (this.isPlaying()) {
+          return
+        }
+
         for (var i = this.greyscales.length - 1; i >= 0; i--) {
           this.greyscales[i].enabled = false
         }
@@ -212,6 +216,9 @@
             this.greyscales[i].enabled = true
           }
         }
+      },
+      isPlaying() {
+        return this.tweener !== null && this.tweener.isActive()
       }
     },
     watch: {
