@@ -1,5 +1,5 @@
 <template lang="pug">
-.d-none.d-lg-block
+.d-none.d-lg-block(style="z-index: -2;")
   .pos-abs.bgc-white.radius-round(v-for="index in circles", :key="index", :style="random_circle()")
 </template>
 
@@ -29,7 +29,7 @@
           opacity: `0.${this.random_opacity()}`,
           left: `${this.random_position()}%`,
           top: `${this.random_position()}%`,
-          zIndex: 1,
+          zIndex: -1,
         }
       },
     }

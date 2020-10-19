@@ -47,7 +47,8 @@
         blur: null,
         avatarWidth: 90,
         currentTarget: 0,
-        greyscales: []
+        greyscales: [],
+        tweener: null,
       }
     },
     props: {
@@ -155,7 +156,7 @@
       tween(target) {
         const targetX = target * this.avatarWidth
         const backout = 0.5 + Math.random() * 1.6
-        gsap.to(this.position,
+        this.tweener = gsap.to(this.position,
           {
             x: targetX,
             duration: 4,
