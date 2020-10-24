@@ -17,6 +17,7 @@ class Reel {
 
     this.target = 0
     this.number_candidates = 0
+    this.candidateOrder = []
 
     this.blurEffect = false
     this.position = {
@@ -44,13 +45,14 @@ class Reel {
   load(candidates, app) {
     let containers = []
     this.number_candidates = candidates.length
+    this.candidateOrder = this._shuffledCandidateOrder(this.number_candidates)
 
     for (var i = 0; i < candidates.length; i++) {
-      let {container, winnerFilter} = createAvatar(`candidate-${i}`, 90, 10)
+      let {container, winnerFilter} = createAvatar(`candidate-${i}`, this.avatarWidth, 10)
 
-      this.greyscales[i] = winnerFilter
+      this.greyscales[this.candidateOrder[i]] = winnerFilter
 
-      container.x += i * this.avatarWidth
+      container.x += this.candidateOrder[i] * this.avatarWidth
       container.y = 100
       containers.push(container)
     }
@@ -60,6 +62,14 @@ class Reel {
     this._setup_rolling(app)
 
     this._updateX()
+  }
+
+  _shuffledCandidateOrder(length) {
+    let list = []
+    for (var i = 0; i < length; i++) {
+      list[i] = i
+    }
+    return list.sort(() => { return Math.random() - 0.5 })
   }
 
   _tween(target) {
@@ -82,7 +92,7 @@ class Reel {
       target += this.number_candidates
     }
 
-    this.onUpdateTargetCallback(target)
+    this.onUpdateTargetCallback(this.candidateOrder.indexOf(target))
   }
 
   _showWinner() {
@@ -92,8 +102,8 @@ class Reel {
     }
 
     for (var i = this.greyscales.length - 1; i >= 0; i--) {
-      if (target != i) {
-        this.greyscales[i].enabled = true
+      if (target != this.candidateOrder[i]) {
+        this.greyscales[this.candidateOrder[i]].enabled = true
       }
     }
   }
@@ -109,7 +119,7 @@ class Reel {
       }
 
       for (var i = 0; i < this.container.children.length; i++) {
-        const newX = this.avatarWidth * i + this.position.x
+        const newX = this.avatarWidth * this.candidateOrder[i] + this.position.x
         if (newX > screenWidth) {
           this.container.children[i].x = newX % frameWidth - (this.avatarWidth / 2)
         } else {
