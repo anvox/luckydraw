@@ -29,7 +29,6 @@
   import * as PIXI from "pixi.js"
 
   import Reel from "./reels/reel.js"
-  import drawFrame from "./reels/frame.js"
 
   export default {
     data() {
@@ -60,8 +59,6 @@
                            this.height,
                            this._onReelTargetUpdated)
       this.app.stage.addChild(this.reel.container)
-
-      drawFrame(this.app)
     },
     methods: {
       loadContainer() {

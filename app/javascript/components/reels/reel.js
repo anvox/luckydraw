@@ -3,6 +3,7 @@ import gsap from 'gsap'
 import MotionPathPlugin from 'gsap/MotionPathPlugin'
 
 import createAvatar from "./avatar.js"
+import drawFrame from "./frame.js"
 
 class Reel {
   constructor(avatarWidth, width, height, onUpdateTargetCallback) {
@@ -60,6 +61,7 @@ class Reel {
     this.container.sortChildren()
 
     this._setup_rolling(app)
+    drawFrame(app)
 
     this._updateX()
   }
@@ -140,6 +142,8 @@ class Reel {
 
     this.target = target
     this._tween(this.target)
+
+    return true
   }
 
   clear() {
