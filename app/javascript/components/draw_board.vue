@@ -36,8 +36,8 @@
         app: null,
         reel: null,
         avatarWidth: 90,
-        width: 810,
-        height: 200,
+        width: 200,
+        height: 450,
         currentTarget: 0
       }
     },

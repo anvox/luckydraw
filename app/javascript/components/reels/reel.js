@@ -6,13 +6,13 @@ import createAvatar from "./avatar.js"
 import drawFrame from "./frame.js"
 
 class Reel {
-  constructor(avatarWidth, width, height, onUpdateTargetCallback) {
+  constructor(avatarSize, width, height, onUpdateTargetCallback) {
     this.container = null
     this.blur = null
     this.greyscales = []
     this.tweener = null
 
-    this.avatarWidth = avatarWidth
+    this.avatarSize = avatarSize
     this.width = width
     this.height = height
 
@@ -23,6 +23,7 @@ class Reel {
     this.blurEffect = false
     this.position = {
       x: 0,
+      y: 0,
       prev: 0,
     }
 
@@ -49,12 +50,12 @@ class Reel {
     this.candidateOrder = this._shuffledCandidateOrder(this.number_candidates)
 
     for (var i = 0; i < candidates.length; i++) {
-      let {container, winnerFilter} = createAvatar(`candidate-${i}`, this.avatarWidth, 10)
+      let {container, winnerFilter} = createAvatar(`candidate-${i}`, this.avatarSize, 10)
 
       this.greyscales[this.candidateOrder[i]] = winnerFilter
 
-      container.x += this.candidateOrder[i] * this.avatarWidth
-      container.y = 100
+      container.x = this.avatarSize / 2
+      container.y = this.candidateOrder[i] * this.avatarSize + this.avatarSize / 2
       containers.push(container)
     }
     this.container.addChild(...containers)
@@ -63,7 +64,7 @@ class Reel {
     this._setup_rolling(app)
     drawFrame(app)
 
-    this._updateX()
+    this._updateY()
   }
 
   _shuffledCandidateOrder(length) {
@@ -75,21 +76,21 @@ class Reel {
   }
 
   _tween(target) {
-    const targetX = target * this.avatarWidth
+    const targetY = target * this.avatarSize
     this.tweener = gsap.to(this.position,
       {
-        x: targetX,
+        y: targetY,
         duration: 4,
         ease: `back.out(${0.5 + Math.random() * 1.6})`,
         onComplete: this._showWinner.bind(this),
-        onUpdate: this._updateX.bind(this)
+        onUpdate: this._updateY.bind(this)
       })
   }
 
-  _updateX() {
-    var target = Math.ceil(this.position.x / this.avatarWidth)
+  _updateY() {
+    var target = Math.ceil(this.position.y / this.avatarSize)
     target = target % this.number_candidates
-    target = 5 - target
+    target = 3 - target
     if (target < 0) {
       target += this.number_candidates
     }
@@ -98,7 +99,7 @@ class Reel {
   }
 
   _showWinner() {
-    var target = 5 - (this.target % this.number_candidates)
+    var target = 3 - (this.target % this.number_candidates)
     if (target < 0) {
       target += this.number_candidates
     }
@@ -112,20 +113,20 @@ class Reel {
 
   _setup_rolling(app) {
     app.ticker.add((delta) => {
-      const screenWidth = this.width + (this.avatarWidth / 2)
-      const frameWidth = this.avatarWidth * this.number_candidates
+      const screenHeight = this.height + (this.avatarSize / 2)
+      const frameHeight = this.avatarSize * this.number_candidates
 
       if (this.blurEffect) {
-        this.blur.blurX = (this.position.x - this.position.prev) * 0.1
-        this.position.prev = this.position.x
+        this.blur.blurY = (this.position.y - this.position.prev) * 0.1
+        this.position.prev = this.position.y
       }
 
       for (var i = 0; i < this.container.children.length; i++) {
-        const newX = this.avatarWidth * this.candidateOrder[i] + this.position.x
-        if (newX > screenWidth) {
-          this.container.children[i].x = newX % frameWidth - (this.avatarWidth / 2)
+        const newY = this.avatarSize * this.candidateOrder[i] + this.position.y
+        if (newY > screenHeight) {
+          this.container.children[i].y = newY % frameHeight - (this.avatarSize / 2)
         } else {
-          this.container.children[i].x = newX - (this.avatarWidth / 2)
+          this.container.children[i].y = newY - (this.avatarSize / 2)
         }
       }
     })

@@ -7,8 +7,8 @@ export default function drawFrame(app) {
   const frame = new PIXI.Sprite(texture)
 
   // TODO: Remove hardcode
-  container.x = 347
-  container.y = 43
+  container.x = -13
+  container.y = 168
 
   frame.width = 115
   frame.height = 115
