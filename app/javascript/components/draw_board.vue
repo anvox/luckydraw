@@ -32,6 +32,8 @@
   import MotionPathPlugin from 'gsap/MotionPathPlugin'
   import FrameImage from "./assets/frame.png"
 
+  import createAvatar from "./reels/avatar.js"
+
   export default {
     data() {
       return {
@@ -83,54 +85,6 @@
       this.app.stage.addChild(frameContainer)
     },
     methods: {
-      createAvatar(url, index) {
-        const container = new PIXI.Container()
-
-        // Avatar
-        const texture = PIXI.Texture.from(url)
-        const bunny = new PIXI.Sprite(texture)
-        bunny.anchor.set(0)
-        bunny.x = -40
-        bunny.y = -40
-        // 500 -> 90
-        bunny.width = this.avatarWidth - 10
-        bunny.height = this.avatarWidth - 10
-
-        // Crop to circle
-        const graphics = new PIXI.Graphics();
-        graphics.beginFill(0xFFFFFF);
-        graphics.drawCircle(texture.width / 2 , texture.height / 2 , texture.width / 2);
-        graphics.endFill();
-
-        bunny.mask = graphics;
-        bunny.addChild(graphics)
-
-        container.addChild(bunny)
-
-        // Draw the white border
-        const border = new PIXI.Graphics();
-        border.beginFill(0xFFFFFF, 0);
-        border.lineStyle(4, 0xFFFFFF);
-        border.drawCircle(0, 0, 40);
-        border.endFill();
-        container.addChild(border)
-
-        // Greyout when showing result
-        const greyscale = new PIXI.filters.ColorMatrixFilter()
-        greyscale.greyscale(0.2, true)
-        greyscale.enabled = false;
-        this.greyscales[index] = greyscale
-        container.filters = [greyscale]
-
-        // Shape whole avatar container
-        container.x = 40
-        container.y = 100
-
-        container.scale.x = 1
-        container.scale.y = 1
-
-        return container
-      },
       clearStage() {
         this.grandContainer.removeChildren()
       },
@@ -168,8 +122,13 @@
       loadContainer() {
         var containers = []
         for (var i = 0; i < this.candidates.length; i++) {
-          var container = this.createAvatar(`candidate-${i}`, i)
+          console.log(createAvatar)
+          let {container, winnerFilter} = createAvatar(`candidate-${i}`, 90, 10)
+
+          this.greyscales[i] = winnerFilter
+
           container.x += i * this.avatarWidth
+          container.y = 100
           containers.push(container)
         }
         this.grandContainer.addChild(...containers)
