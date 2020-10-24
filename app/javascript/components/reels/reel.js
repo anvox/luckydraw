@@ -4,7 +4,6 @@ import MotionPathPlugin from 'gsap/MotionPathPlugin'
 
 import createAvatar from "./avatar.js"
 
-
 class Reel {
   constructor(avatarWidth, width, height, onUpdateTargetCallback) {
     this.container = null

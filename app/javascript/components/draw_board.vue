@@ -27,18 +27,13 @@
 
 <script type="text/javascript">
   import * as PIXI from "pixi.js"
-  import FrameImage from "./assets/frame.png"
 
   import Reel from "./reels/reel.js"
+  import drawFrame from "./reels/frame.js"
 
   export default {
     data() {
       return {
-        position: {
-          x: 0,
-          prev: 0,
-        },
-        // Refactored
         app: null,
         reel: null,
         avatarWidth: 90,
@@ -64,11 +59,9 @@
                            this.width,
                            this.height,
                            this._onReelTargetUpdated)
-
       this.app.stage.addChild(this.reel.container)
 
-      const frameContainer = this.drawFrame()
-      this.app.stage.addChild(frameContainer)
+      drawFrame(this.app)
     },
     methods: {
       loadContainer() {
@@ -81,22 +74,6 @@
         const target = this.reel.target + Math.floor(Math.random() * this.candidates.length * 1.3) + this.candidates.length
 
         this.reel.play(target)
-      },
-      drawFrame() {
-        const container = new PIXI.Container()
-        const texture = PIXI.Texture.from(FrameImage)
-        const frame = new PIXI.Sprite(texture)
-
-        // TODO: Remove hardcode
-        container.x = 347
-        container.y = 43
-
-        frame.width = 115
-        frame.height = 115
-
-        container.addChild(frame)
-
-        return container
       },
     },
     watch: {
