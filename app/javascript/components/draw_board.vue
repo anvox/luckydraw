@@ -3,8 +3,8 @@
   width: 100%;
 }
 #draw-board {
-  width: 810px;
-  height: 200px;
+  width: 200px;
+  height: 450px;
   margin: auto;
   z-index: 100;
 }
@@ -14,9 +14,14 @@
 </style>
 
 <template lang="pug">
-.animate
-  #draw-board(ref="board")
-.winner.col-12.col-md-12.d-flex.flex-column.justify-content-center.text-center
+.winner.col-4.col-md-4.d-flex.flex-column.justify-content-center.text-center
+  h1.align-self-center
+    span.text-110.text-yellow-l3
+      |{{currentAvatar}}
+.d-flex.flex-column
+  .animate
+    #draw-board(ref="board")
+.winner.col-4.col-md-4.d-flex.flex-column.justify-content-center.text-center
   h1.align-self-center
     span.text-110.text-yellow-l3
       |{{currentAvatar}}
