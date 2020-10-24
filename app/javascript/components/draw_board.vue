@@ -92,13 +92,14 @@
         bunny.anchor.set(0)
         bunny.x = -40
         bunny.y = -40
+        // 500 -> 90
         bunny.width = this.avatarWidth - 10
         bunny.height = this.avatarWidth - 10
 
         // Crop to circle
         const graphics = new PIXI.Graphics();
         graphics.beginFill(0xFFFFFF);
-        graphics.drawCircle(40 , 40 , 40);
+        graphics.drawCircle(texture.width / 2 , texture.height / 2 , texture.width / 2);
         graphics.endFill();
 
         bunny.mask = graphics;

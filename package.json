@@ -8,6 +8,7 @@
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "4.3.0",
     "@vue/compiler-sfc": "^3.0.0",
+    "axios": "^0.20.0",
     "bootstrap": "^4.5.2",
     "csv-string": "^4.0.1",
     "gsap": "^3.5.1",
