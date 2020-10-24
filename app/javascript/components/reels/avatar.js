@@ -2,7 +2,6 @@ import * as PIXI from "pixi.js"
 
 // size = 90
 // margin = 10
-// TODO: Create avatar model
 export default function createAvatar(url, size, margin) {
   const container = new PIXI.Container()
   const avatarRadius = (size - margin) / 2

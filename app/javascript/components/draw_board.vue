@@ -27,42 +27,30 @@
 
 <script type="text/javascript">
   import * as PIXI from "pixi.js"
-  import gsap from 'gsap'
-  import PixiPlugin from 'gsap/PixiPlugin'
-  import MotionPathPlugin from 'gsap/MotionPathPlugin'
   import FrameImage from "./assets/frame.png"
 
-  import createAvatar from "./reels/avatar.js"
+  import Reel from "./reels/reel.js"
 
   export default {
     data() {
       return {
-        app: null,
-        width: 810,
-        height: 200,
-        containers: [],
-        grandContainer: null,
         position: {
           x: 0,
           prev: 0,
         },
-        blur: null,
+        // Refactored
+        app: null,
+        reel: null,
         avatarWidth: 90,
-        currentTarget: 0,
-        greyscales: [],
-        tweener: null,
+        width: 810,
+        height: 200,
+        currentTarget: 0
       }
     },
     props: {
       candidates: {},
-      blurEffect: {
-        default: false
-      }
     },
     mounted() {
-      PixiPlugin.registerPIXI(PIXI)
-      gsap.registerPlugin(PixiPlugin, MotionPathPlugin)
-
       this.app = new PIXI.Application({
         width: this.width,
         height: this.height,
@@ -72,82 +60,27 @@
       })
       this.$refs.board.appendChild(this.app.view)
 
-      this.grandContainer = new PIXI.Container({sortableChildren: true})
-      if (this.blurEffect) {
-        this.blur = new PIXI.filters.BlurFilter()
-        this.blur.blurX = 0
-        this.blur.blurY = 0
-        this.grandContainer.filters = [this.blur]
-      }
-      this.app.stage.addChild(this.grandContainer)
+      this.reel = new Reel(this.avatarWidth,
+                           this.width,
+                           this.height,
+                           this._onReelTargetUpdated)
+
+      this.app.stage.addChild(this.reel.container)
 
       const frameContainer = this.drawFrame()
       this.app.stage.addChild(frameContainer)
     },
     methods: {
-      clearStage() {
-        this.grandContainer.removeChildren()
-      },
-      roll() {
-        this.app.ticker.add((delta) => {
-          const screenWidth = this.width + (this.avatarWidth / 2)
-          const frameWidth = this.avatarWidth * this.grandContainer.children.length
-
-          if (this.blurEffect) {
-            this.blur.blurX = (this.position.x - this.position.prev) * 0.1
-            this.position.prev = this.position.x
-          }
-
-          for (var i = 0; i < this.grandContainer.children.length; i++) {
-            const newX = this.avatarWidth * i + this.position.x
-            if (newX > screenWidth) {
-              this.grandContainer.children[i].x = newX % frameWidth - (this.avatarWidth / 2)
-            } else {
-              this.grandContainer.children[i].x = newX - (this.avatarWidth / 2)
-            }
-          }
-        })
-      },
-      tween(target) {
-        const targetX = target * this.avatarWidth
-        const backout = 0.5 + Math.random() * 1.6
-        this.tweener = gsap.to(this.position,
-          {
-            x: targetX,
-            duration: 4,
-            ease: `back.out(${backout})`,
-            onComplete: this.showWinner
-          })
-      },
       loadContainer() {
-        var containers = []
-        for (var i = 0; i < this.candidates.length; i++) {
-          console.log(createAvatar)
-          let {container, winnerFilter} = createAvatar(`candidate-${i}`, 90, 10)
-
-          this.greyscales[i] = winnerFilter
-
-          container.x += i * this.avatarWidth
-          container.y = 100
-          containers.push(container)
-        }
-        this.grandContainer.addChild(...containers)
-        this.grandContainer.sortChildren()
-
-        this.roll()
+        this.reel.load(this.candidates, this.app)
+      },
+      _onReelTargetUpdated(target) {
+        this.currentTarget = target
       },
       startPlay() {
-        if (this.isPlaying()) {
-          return
-        }
+        const target = this.reel.target + Math.floor(Math.random() * this.candidates.length * 1.3) + this.candidates.length
 
-        for (var i = this.greyscales.length - 1; i >= 0; i--) {
-          this.greyscales[i].enabled = false
-        }
-
-        this.currentTarget = (this.position.x / this.avatarWidth) + Math.floor(Math.random() * this.candidates.length * 1.3) + this.candidates.length
-
-        this.tween(this.currentTarget)
+        this.reel.play(target)
       },
       drawFrame() {
         const container = new PIXI.Container()
@@ -165,25 +98,10 @@
 
         return container
       },
-      showWinner() {
-        var target = 5 - (this.currentTarget % this.candidates.length)
-        if (target < 0) {
-          target += this.candidates.length
-        }
-
-        for (var i = this.greyscales.length - 1; i >= 0; i--) {
-          if (target != i) {
-            this.greyscales[i].enabled = true
-          }
-        }
-      },
-      isPlaying() {
-        return this.tweener !== null && this.tweener.isActive()
-      }
     },
     watch: {
       candidates(newCandidates, _) {
-        this.clearStage()
+        this.reel.clear()
         if (newCandidates.length <= 0) {
           return
         }
@@ -201,13 +119,7 @@
           return ""
         }
 
-        var target = Math.ceil(this.position.x / this.avatarWidth)
-        target = target % this.candidates.length
-        target = 5 - target
-        if (target < 0) {
-          target += this.candidates.length
-        }
-        return this.candidates[target][0]
+        return this.candidates[this.currentTarget][0]
       }
     }
   }
