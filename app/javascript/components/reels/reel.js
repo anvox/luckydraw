@@ -6,7 +6,7 @@ import createAvatar from "./avatar.js"
 import drawFrame from "./frame.js"
 
 class Reel {
-  constructor(avatarSize, width, height, onUpdateTargetCallback) {
+  constructor(avatarSize, width, height, onUpdateTargetCallback, index) {
     this.container = null
     this.blur = null
     this.greyscales = []
@@ -20,6 +20,9 @@ class Reel {
     this.number_candidates = 0
     this.candidateOrder = []
 
+    this.reelIndex = index
+
+    // Blur make rolling like real, but it disable antilalias, which makes border pixelated
     this.blurEffect = false
     this.position = {
       x: 0,
@@ -28,6 +31,8 @@ class Reel {
     }
 
     this.onUpdateTargetCallback = onUpdateTargetCallback
+
+    this.frame = null
 
     gsap.registerPlugin(MotionPathPlugin)
 
@@ -54,7 +59,7 @@ class Reel {
 
       this.greyscales[this.candidateOrder[i]] = winnerFilter
 
-      container.x = this.avatarSize / 2
+      container.x = 10 + this.avatarSize / 2 + this.reelIndex * 120
       container.y = this.candidateOrder[i] * this.avatarSize + this.avatarSize / 2
       containers.push(container)
     }
@@ -62,7 +67,7 @@ class Reel {
     this.container.sortChildren()
 
     this._setup_rolling(app)
-    drawFrame(app)
+    this.frame = drawFrame(app, this.reelIndex)
 
     this._updateY()
   }
@@ -95,7 +100,7 @@ class Reel {
       target += this.number_candidates
     }
 
-    this.onUpdateTargetCallback(this.candidateOrder.indexOf(target))
+    this.onUpdateTargetCallback(this.candidateOrder.indexOf(target), this.reelIndex)
   }
 
   _showWinner() {
@@ -109,6 +114,7 @@ class Reel {
         this.greyscales[this.candidateOrder[i]].enabled = true
       }
     }
+    this.frame.visible = true
   }
 
   _setup_rolling(app) {
@@ -137,6 +143,7 @@ class Reel {
       return false
     }
 
+    this.frame.visible = false
     for (var i = this.greyscales.length - 1; i >= 0; i--) {
       this.greyscales[i].enabled = false
     }
@@ -153,6 +160,10 @@ class Reel {
 
   _isPlaying() {
     return this.tweener !== null && this.tweener.isActive()
+  }
+
+  nextTarget(targets) {
+    return this.target + Math.floor(Math.random() * this.number_candidates * 1.3) + this.number_candidates
   }
 }
 

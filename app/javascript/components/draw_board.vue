@@ -3,7 +3,7 @@
   width: 100%;
 }
 #draw-board {
-  width: 200px;
+  width: 240px;
   height: 450px;
   margin: auto;
   z-index: 100;
@@ -17,16 +17,17 @@
 .winner.col-4.col-md-4.d-flex.flex-column.justify-content-center.text-center
   h1.align-self-center
     span.text-110.text-yellow-l3
-      |{{currentAvatar}}
-.d-flex.flex-column
+      |{{currentAvatar0}}
+.d-flex.flex-column.col-4.col-md-4
   .animate
     #draw-board(ref="board")
 .winner.col-4.col-md-4.d-flex.flex-column.justify-content-center.text-center
   h1.align-self-center
     span.text-110.text-yellow-l3
-      |{{currentAvatar}}
+      |{{currentAvatar1}}
 .col-12.col-md-12.d-flex.flex-column.justify-content-center.text-center
   .col
+    br
     button.col-6.btn.btn-outline-white.brc-white-tp3(type="button", @click="startPlay") Draw
 </template>
 
@@ -41,9 +42,10 @@
         app: null,
         reel: null,
         avatarWidth: 90,
-        width: 200,
+        width: 240,
         height: 450,
-        currentTarget: 0
+        currentTargets: [],
+        reels: []
       }
     },
     props: {
@@ -59,28 +61,49 @@
       })
       this.$refs.board.appendChild(this.app.view)
 
-      this.reel = new Reel(this.avatarWidth,
-                           this.width,
-                           this.height,
-                           this._onReelTargetUpdated)
-      this.app.stage.addChild(this.reel.container)
+      this.reels = [
+        new Reel(this.avatarWidth,
+                 this.width,
+                 this.height,
+                 this._onReelTargetUpdated,
+                 0),
+        new Reel(this.avatarWidth,
+                 this.width,
+                 this.height,
+                 this._onReelTargetUpdated,
+                 1)]
+      this.currentTargets = [0, 0]
+      this.app.stage.addChild(this.reels[0].container, this.reels[1].container)
     },
     methods: {
       loadContainer() {
-        this.reel.load(this.candidates, this.app)
+        this.reels[0].load(this.candidates, this.app)
+        this.reels[1].load(this.candidates, this.app)
       },
-      _onReelTargetUpdated(target) {
-        this.currentTarget = target
+      _onReelTargetUpdated(target, reelIndex) {
+        console.log(`${reelIndex} = ${target}`)
+        this.currentTargets[reelIndex] = target
       },
       startPlay() {
-        const target = this.reel.target + Math.floor(Math.random() * this.candidates.length * 1.3) + this.candidates.length
+        let targets = []
+        let i = 0
+        while (i < this.reels.length) {
+          let target = this.reels[i].nextTarget(targets)
+          if (targets.indexOf(target % this.candidates.length) >= 0) {
+            continue
+          }
+          this.reels[i].play(target)
 
-        this.reel.play(target)
+          targets.push(target % this.candidates.length)
+          i++
+        }
+        console.log(targets)
       },
     },
     watch: {
       candidates(newCandidates, _) {
-        this.reel.clear()
+        this.reels[0].clear()
+        this.reels[1].clear()
         if (newCandidates.length <= 0) {
           return
         }
@@ -93,13 +116,20 @@
       }
     },
     computed: {
-      currentAvatar() {
+      currentAvatar0() {
         if (this.candidates.length <= 0) {
           return ""
         }
 
-        return this.candidates[this.currentTarget][0]
-      }
+        return this.candidates[this.currentTargets[0]][0]
+      },
+      currentAvatar1() {
+        if (this.candidates.length <= 0) {
+          return ""
+        }
+
+        return this.candidates[this.currentTargets[1]][0]
+      },
     }
   }
 </script>
