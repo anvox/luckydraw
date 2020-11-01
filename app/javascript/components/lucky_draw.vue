@@ -1,6 +1,6 @@
 <template lang="pug">
 random-circles(:circles=40)
-.row.container.container-plus.mx-auto.mt-3.mb-5
+.row.container.container-plus.mx-auto.mb-5
   draw-board(:candidates="candidates")
 draw-settings(v-model="candidates")
 </template>

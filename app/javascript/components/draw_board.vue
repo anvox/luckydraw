@@ -81,7 +81,6 @@
         this.reels[1].load(this.candidates, this.app)
       },
       _onReelTargetUpdated(target, reelIndex) {
-        console.log(`${reelIndex} = ${target}`)
         this.currentTargets[reelIndex] = target
       },
       startPlay() {
