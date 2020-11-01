@@ -28,7 +28,7 @@
 .col-12.col-md-12.d-flex.flex-column.justify-content-center.text-center
   .col
     br
-    button.col-6.btn.btn-outline-white.brc-white-tp3(type="button", @click="startPlay") Draw
+    button.col-6.btn.btn-outline-white.brc-white-tp3(type="button", @click="startPlay", :disabled="isWaiting") Draw
 </template>
 
 <script type="text/javascript">
@@ -129,6 +129,9 @@
 
         return this.candidates[this.currentTargets[1]][0]
       },
+      isWaiting() {
+        return this.candidates.length <= 0
+      }
     }
   }
 </script>

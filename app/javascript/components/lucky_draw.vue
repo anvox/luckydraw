@@ -1,5 +1,5 @@
 <template lang="pug">
-random-circles(:circles=40)
+random-circles(:circles=40, :waiting="isWaiting")
 .row.container.container-plus.mx-auto.mb-5
   draw-board(:candidates="candidates")
 draw-settings(v-model="candidates")
@@ -25,6 +25,11 @@ draw-settings(v-model="candidates")
     },
     mounted() {
       Basic._HandleBasics()
+    },
+    computed: {
+      isWaiting() {
+        return this.candidates.length <= 0
+      }
     }
   }
 </script>
