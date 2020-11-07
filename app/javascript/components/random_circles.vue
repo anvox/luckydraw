@@ -56,7 +56,7 @@
       }
 
       if (this.waiting) {
-        this.play()
+        // this.play()
       }
     },
     methods: {
@@ -83,11 +83,11 @@
     },
     watch: {
       waiting(newValue, _currentValue) {
-        if (newValue) {
-          this.play()
-        } else {
-          this.stop()
-        }
+        // if (newValue) {
+        //   this.play()
+        // } else {
+        //   this.stop()
+        // }
       }
     }
   }
