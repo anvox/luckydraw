@@ -18,12 +18,12 @@
     "turbolinks": "^5.2.0",
     "vue": "^3.0.0",
     "vue-loader": "^16.0.0-beta.8",
-    "vue-template-compiler": "^2.6.12"
+    "vue-template-compiler": "^2.6.12",
+    "pug": "^3.0.0",
+    "pug-plain-loader": "^1.0.0"
   },
   "version": "0.1.0",
   "devDependencies": {
-    "pug": "^3.0.0",
-    "pug-plain-loader": "^1.0.0",
     "webpack-dev-server": "^3.11.0"
   }
 }
